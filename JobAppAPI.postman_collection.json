@@ -1,0 +1,101 @@
+{
+  "info": {
+    "name": "Job Application API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET All Applications",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/applications",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "applications"
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET Application by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/applications/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "applications",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST Create Application",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"post_job_id\": 10,\n  \"student_id\": \"65312128\",\n  \"GPA\": 3.0,\n  \"stu_phone_number\": \"0801234567\",\n  \"resume\": \"resumes/65312128_resume.pdf\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/applications",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "applications"
+          ]
+        }
+      }
+    },
+    {
+      "name": "PUT Update Application Status",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"accept_status_id\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/applications/1/status",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "applications",
+            "1",
+            "status"
+          ]
+        }
+      }
+    }
+  ]
+}
