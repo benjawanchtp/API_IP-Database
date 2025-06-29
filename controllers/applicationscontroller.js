@@ -21,6 +21,7 @@ exports.createApplication = (req, res) => {
     VALUES (?, ?, ?, ?, ?)`;
   db.query(query, [post_job_id, student_id, GPA, stu_phone_number, resume], (err, result) => {
     if (err) return res.status(500).send(err);
+    console.log(result);
     res.status(201).json({ message: 'Application created', id: result.insertId });
   });
 };

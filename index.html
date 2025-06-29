@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Applications</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ccc; }
+    th { background-color: #f0f0f0; }
+    input, button { padding: 8px; margin: 5px; }
+    form { margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <h1>📄 รายการใบสมัครงาน</h1>
+  <table id="appTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Student ID</th>
+        <th>GPA</th>
+        <th>Phone</th>
+        <th>Resume</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button onclick="loadApplications()">🔄 แสดงทั้งหมด</button>
+
+  <h2>🔍 ค้นหาใบสมัคร</h2>
+  <form id="searchForm">
+    <input type="text" placeholder="Student ID" name="student_id">
+    <input type="number" step="0.01" placeholder="GPA" name="GPA">
+    <input type="text" placeholder="Phone Number" name="stu_phone_number">
+    <button type="submit">ค้นหา</button>
+  </form>
+
+  <script>
+    const apiUrl = "http://localhost:3000/applications";
+
+    function loadApplications() {
+      fetch(apiUrl)
+        .then(res => res.json())
+        .then(data => renderTable(data))
+        .catch(err => console.error("โหลดข้อมูลล้มเหลว:", err));
+    }
+
+    function renderTable(data) {
+      const tbody = document.querySelector("#appTable tbody");
+      tbody.innerHTML = "";
+
+      if (data.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='5'>❌ ไม่พบข้อมูล</td></tr>";
+        return;
+      }
+
+      data.forEach(app => {
+        const row = `
+          <tr>
+            <td>${app.job_application_id}</td>
+            <td>${app.student_id}</td>
+            <td>${app.GPA}</td>
+            <td>${app.stu_phone_number}</td>
+            <td><a href="${app.resume}" target="_blank">เปิดลิงก์</a></td>
+          </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    document.getElementById("searchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const studentId = formData.get("student_id").trim();
+      const gpa = formData.get("GPA").trim();
+      const phone = formData.get("stu_phone_number").trim();
+
+      fetch(apiUrl)
+        .then(res => res.json())
+        .then(data => {
+          const filtered = data.filter(app => {
+            return (
+              (!studentId || app.student_id === studentId) &&
+              (!gpa || app.GPA.toString() === gpa) &&
+              (!phone || app.stu_phone_number === phone)
+            );
+          });
+          renderTable(filtered);
+        })
+        .catch(err => console.error("ค้นหาล้มเหลว:", err));
+    });
+
+    // โหลดข้อมูลทั้งหมดเมื่อเปิดหน้า
+    loadApplications();
+  </script>
+</body>
+</html>
